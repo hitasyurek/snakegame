@@ -1,0 +1,7 @@
+1- Skor paragrafı ++
+2- 10 yem de +20 hız 20 yem de + 30 hız 50  yem de + 50 hız  --
+3- Butonlar ile oyuna başla
+4- Butonlar ile awsd seçimi 
+5- Son oynana oyunlar
+6- Girişte Kullanıcıdan .Alınan isim. ++
+7- Zamanlayıcı ile 3 dakika zaman olucak 

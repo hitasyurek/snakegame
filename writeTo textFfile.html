@@ -1,0 +1,14 @@
+<html>
+<h2>Create Text file in JavaScript</h2>
+<script>
+function WriteFile()
+{
+   var fso  = new ActiveXObject("Scripting.FileSystemObject");
+   var fh = fso.CreateTextFile("score.txt", 8,true);
+   x=document.getElementById("name").value;
+   fh.WriteLine(x);
+   fh.Close();
+}
+</script>
+<input type="Button" value="Create File" onClick='createFile()'>
+</html>

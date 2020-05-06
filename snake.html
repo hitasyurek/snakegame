@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+  <audio controls>
+  <source src="fade.mp3" type="audio/mpeg"> 
+  
+  </audio>
+
+  <audio eating>
+
+      <source src="appleeating.mp3" type="audio/mpeg"> 
+      
+      </audio>
+    
+   <title>Snake</title>
+    <style>
+        
+        #snake {
+            height:  32px;
+            width:  32px;
+            background-image: url("./snake head.png");
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .box {
+          height:  32px;
+          width: 32px;
+          background-image: url("./snake body.png");
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+
+        #forage {
+          height: 32px;
+            width:  32px;
+            background-image: url("./apple.png");
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        div {
+         text-align: center;
+         font-size: 55px;
+         margin-top:30px;
+            }
+
+    
+
+    </style>
+
+</head>
+
+<body>
+
+  
+    <div id="count"></div>
+    <div id="Kronometre"></div>
+    <div id="snake"></div> 
+    <div id="name"></div>
+
+    
+    <script>  //zamanlayıcı kısmı
+    
+    
+    var playername = window.prompt("Adınız",""); //kullanıcıdan isim alınıyor
+    // var value;
+
+        var score = 0 ; 
+       
+        var speedvalue = 200;
+
+       var second = 99999 //süre 9999saniye
+      var secondscore = 10 ;// skor ile artıcak süre
+      function SecondStop()
+      {
+	    window.clearInterval(value);
+  
+      }
+      function SecondStart()
+{     
+	   second --;
+     if(score == 2 ){
+       speedvalue = 100;
+       if(score == 4) {
+         speedvalue = 10 ;
+       }
+     }
+     
+
+	   if(second >=0){ //saniye sıfılanırsa
+    
+     if(secondscore >= 0) { 
+     secondscore--; // 
+    
+    
+
+     if(score==111) { //insider a teşekkürler mesajı
+      var a =  window.prompt("İnsideer 1+1+1 Ekibine Verdikleri Eğitim İçin Teşekkür Ederim sitelerine bir bakin ! insider.com.tr (eğer gitmek isterseniz 1  yazın - istemiyorsanız 0 )")
+      if(a == 1) {
+        score+20;
+        function yonlendir(){ 
+         window.location.href="https://www.insider.com.tr";
+       }
+       yonlendir();
+
+
+      }
+      else{
+
+        window.prompt("Bence Bakmalıydın !") ;
+        score = 0 ;
+
+      }
+       
+           }
+    }
+     else{secondscore = 10} //  
+         
+	  }
+
+    if( secondscore % 10 ==  0 ) {
+    score++; //her 10 saniye de  scor +1 artıcak 
+    document.getElementById('count').innerHTML = score;
+      }
+    }
+
+   var value = window.setInterval('SecondStart()',1000); // 10 saniye de bir skor için interval 
+</script>
+
+
+<script> //yılan hareket kısmı
+
+
+var snake = document.getElementById('snake');
+        var snakeLeft = 0;
+        var snakeTop = 0;
+        var boxPosition;
+        var oldPosition = {
+          left: snakeLeft + 'px',
+          top: snakeTop + 'px'
+        }; // left: 0px, top: 0px
+        var direction = 'right';
+
+        var addForage = function () {  //yem ekleme fonksiyon
+          var oldForage = document.getElementById('forage'); 
+          
+          if (oldForage) {
+            oldForage.remove(); //eski yem yenilince kalkıyor
+          }
+          //  yeni yem eklicek
+          var forage = document.createElement('div');
+          forage.id = 'forage';
+          
+          var forageLeft = Math.floor(Math.random() * 10) * 36; //rastgele yer
+          var forageTop = Math.floor(Math.random() * 10) * 36; //rast gele yer
+
+          forage.style.left = forageLeft + 'px';
+          forage.style.top = forageTop + 'px';
+
+          document.body.appendChild(forage);
+        };
+
+        var addBox = function () { //yılanan vucut ekleme
+          var box = document.createElement('div');
+          box.setAttribute('class', 'box');
+          document.body.appendChild(box);
+        } 
+
+        addForage(); //yem eklenir
+
+        if(second >= 0 ) { // 
+          setInterval(function () {
+          oldPosition = {
+            
+            left: snakeLeft + 'px',
+            top: snakeTop + 'px'
+          };
+        
+          
+         
+          var mappedDirection = getMappedDirection(direction);
+          var move = 0;
+          var forage = document.getElementById('forage');
+       
+
+          if (mappedDirection.direction == 'left') {
+              snakeLeft += 36 * mappedDirection.multiplier;
+          } else if (mappedDirection.direction == 'top') {
+              snakeTop += 36 * mappedDirection.multiplier;
+          }
+
+          if (mappedDirection.direction == 'left') {
+            if (snakeLeft > window.innerWidth) {
+              
+              window.location.reload();
+              window.alert('warning'.innerHTML= playername +" "+"Öldünüz!" + " " + "Skorunuz" + " " +  score );			// isim + uyarı + point skor belirm
+            } else if (snakeLeft < -16) {
+              window.location.reload();
+              window.alert('warning'.innerHTML= playername +" "+"Öldünüz!" + " " + "Skorunuz" + " " +  score );				// isim + uyarı + point skor belirm
+            }
+
+            move = snakeLeft;
+          } else if (mappedDirection.direction == 'top') {
+            if (snakeTop > window.innerHeight) {
+              window.location.reload();
+              window.alert('warning'.innerHTML= playername +" "+"Öldünüz!" + " " + "Skorunuz" + " " +  score );				// isim + uyarı + point skor belirm
+            } else if (snakeTop < -16) {
+  
+
+
+              window.location.reload();
+              window.alert('warning'.innerHTML= playername +" "+"Öldünüz!" + " " + "Skorunuz" + " " +  score );			// isim + uyarı + point skor belirme
+              
+            }
+
+            move = snakeTop;
+          }
+
+          snake.style[mappedDirection.direction] = move + 'px';
+
+          var snakeCurrentLeft = Number(snake.style.left.replace('px', ''));
+          var snakeCurrentTop = Number(snake.style.top.replace('px', ''));
+
+          var forageCurrentLeft = Number(forage.style.left.replace('px', ''));
+          var forageCurrentTop = Number(forage.style.top.replace('px', ''));
+
+          if (snakeCurrentLeft === forageCurrentLeft && snakeCurrentTop === forageCurrentTop) { //yem yerse yeni yem eklenmesi ve yılana  vucut eklenmesi kısmı
+            addForage();
+            addBox();
+            score++;
+            document.getElementById('count').innerHTML = score;
+          
+           var audio = document.getElementById("eating.mp3");
+           audio.play();
+      
+          }
+         
+          /* box move etme kisim: */
+
+          var boxes = document.getElementsByClassName('box');
+          
+          for (var i = 0; i < boxes.length; i++) {
+            boxPosition = oldPosition;
+            oldPosition = {
+              left: boxes[i].style.left,
+              top: boxes[i].style.top
+              
+            };
+            boxes[i].style.left = boxPosition.left;
+            boxes[i].style.top = boxPosition.top;
+          }
+        }, speedvalue);
+        }
+        
+       
+        var setDirection = function (event) {
+      if (event.code == "ArrowUp" || event.code == "KeyW") {
+        document.getElementById('snake').style.transform='rotate(270deg)';
+      if (direction == 'bottom') direction = 'bottom';
+      else direction = 'top';
+      
+      } else if (event.code == "ArrowDown" || event.code == "KeyS") {
+        document.getElementById('snake').style.transform='rotate(90deg)';
+      if (direction == 'top') direction = 'top';
+      
+      else direction = 'bottom';
+
+      } else if (event.code == "ArrowLeft" || event.code == "KeyA") {
+        document.getElementById('snake').style.transform='rotate(180deg)';
+      if (direction == 'right') direction = 'right';
+      else direction = 'left';
+      } else if (event.code == "ArrowRight" || event.code == "KeyD") {
+        document.getElementById('snake').style.transform='rotate(0deg)';
+       
+      if (direction == 'left') direction = 'left';
+      else direction = 'right';
+      }
+      else if (event.code == "KeyR") {
+              window.location.reload()
+            }
+
+      };
+
+        var getMappedDirection = function (direction) {
+          var multiplier = -1;
+          var positiveDirection = ['bottom', 'right'];
+          var mappedDirections = {
+            'right': 'left',
+            'bottom': 'top'
+          };
+
+          if (positiveDirection.indexOf(direction) > -1) {
+            multiplier = 1;
+          }
+
+          return {
+            multiplier: multiplier,
+            direction: mappedDirections[direction] || direction
+          }
+
+        };
+
+        document.addEventListener('keyup', setDirection);
+
+
+      //  <iframe src="scor.txt" name="I1" width="494" height="245" frameborder="0"></iframe>
+ // <p id="p1"></p>
+
+ </script>
+
+
+
+
+
+<div id="second"></div>
+<div id="warning"></div>
+
+
+
+<div></div>
+
+  
+</body>
+</html>
